@@ -139,7 +139,7 @@ function removeAllChildNodes(parent) {
 //Show the weather and forecast on the page
 var showWeather = function (data, city) {
     currentWeather(data, city);
-    //forecastWeather(data, city);
+    forecastWeather(data, city);
     localStorageCities(city);
 
 }
@@ -189,6 +189,68 @@ var currentWeather = function (data, city) {
     spanEl.style.color = "white";
     spanEl.textContent = uvi;
     h5UviCurrent.appendChild(spanEl);
+}
+//Show the forecast weather information
+var forecastWeather = function (data, city) {
+    weatherContainerEl.appendChild(document.createElement("br"));
+    var titleForecast = document.createElement("h4");
+    titleForecast.textContent = '5-Day Forecast';
+    weatherContainerEl.appendChild(titleForecast);
+
+
+    var divForecast = document.createElement("div");
+    divForecast.className = 'card-group';
+    weatherContainerEl.appendChild(divForecast);
+
+    for (let i = 1; i <= 5; i++) {
+        var divDay = document.createElement("div");
+        divDay.className = ' card mb-1';
+        divDay.id = 'day-' + i;
+        divDay.style.maxWidth = '18rem';
+        divForecast.appendChild(divDay);
+
+        var divHeader = document.createElement("div");
+        divHeader.className = 'card-header';
+        var timeFc = data.daily[i].dt;
+        divHeader.textContent = ' (' + convertTime(timeFc) + ')';
+        divDay.appendChild(divHeader);
+
+        var divBody = document.createElement("div");
+        divBody.className = 'card-body';
+        divDay.appendChild(divBody);
+
+        var myImageFc = new Image(30, 30);
+        var iconFc = data.daily[i].weather[0].icon;
+        var srcIconFc = 'http://openweathermap.org/img/wn/' + iconFc + '@2x.png';
+        myImageFc.src = srcIconFc;
+        divBody.appendChild(myImageFc);
+
+        var pTempMin = document.createElement("p");
+        pTempMin.className = 'card-text';
+        pTempMin.textContent = 'Temp Min: ' + data.daily[i].temp.min;
+        divBody.appendChild(pTempMin);
+
+        var pTempMax = document.createElement("p");
+        pTempMax.className = 'card-text';
+        pTempMax.textContent = 'Temp Max: ' + data.daily[i].temp.max
+        divBody.appendChild(pTempMax);
+
+        var pWind = document.createElement("p");
+        pWind.className = 'card-text';
+        pWind.textContent = 'Wind: ' + data.daily[i].wind_speed + ' MPH'
+        divBody.appendChild(pWind);
+
+        var pHum = document.createElement("p");
+        pHum.className = 'card-text';
+        pHum.textContent = 'Humidity: ' + data.daily[i].humidity + ' %'
+        divBody.appendChild(pHum);
+
+
+
+    }
+
+
+
 }
 
 //return the date 
