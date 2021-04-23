@@ -107,6 +107,113 @@ var localStorageCities = function (city) {
     history = uniqueChars;
     localStorage.setItem('history', JSON.stringify(history));
     console.log(localStorage.getItem('history'));
-    //removeAllChildNodes(cityButtonsEl);
-    //showListCities(history);
+    removeAllChildNodes(cityButtonsEl);
+    showListCities(history);
 }
+
+
+//Create a button list with the searched cities
+var showListCities = function (history) {
+
+    if (history.length > 0) {
+        for (let i = 0; i < history.length; i++) {
+            var btnCity = document.createElement("button");
+            btnCity.className = 'btn';
+            btnCity.id = history[i];
+            btnCity.setAttribute("data-city", history[i]);
+            btnCity.innerHTML = history[i];
+            cityButtonsEl.appendChild(btnCity);
+
+        }
+
+
+    }
+}
+
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+//Show the weather and forecast on the page
+var showWeather = function (data, city) {
+    currentWeather(data, city);
+    //forecastWeather(data, city);
+    localStorageCities(city);
+
+}
+
+//Show the current weather information
+var currentWeather = function (data, city) {
+    var temp = data.current.temp;
+    var time = data.current.dt;
+    var wind = data.current.wind_speed;
+    var humidity = data.current.humidity;
+    var uvi = data.current.uvi;
+    var icon = data.current.weather[0].icon;
+
+    var divCurrent = document.createElement("div");
+    divCurrent.className = 'border border-primary';
+    weatherContainerEl.appendChild(divCurrent);
+
+    var h2Current = document.createElement("h2");
+    h2Current.textContent = city + ' (' + convertTime(time) + ')';
+    divCurrent.appendChild(h2Current);
+
+    var myImage = new Image(50, 50);
+    var srcIcon = 'http://openweathermap.org/img/wn/' + icon + '@2x.png';
+    myImage.src = srcIcon;
+    myImage.className = 'btn-inline';
+    divCurrent.appendChild(myImage);
+
+    var h5TempCurrent = document.createElement("h5");
+    h5TempCurrent.textContent = "Temp: " + temp + "°F";
+    divCurrent.appendChild(h5TempCurrent);
+
+    var h5WindCurrent = document.createElement("h5");
+    h5WindCurrent.textContent = "Wind: " + wind + " MPH";
+    divCurrent.appendChild(h5WindCurrent);
+
+    var h5HumidityCurrent = document.createElement("h5");
+    h5HumidityCurrent.textContent = "Humidity: " + humidity + " %";
+    divCurrent.appendChild(h5HumidityCurrent);
+
+    var h5UviCurrent = document.createElement("h5");
+    h5UviCurrent.textContent = "UV Index: ";
+    divCurrent.appendChild(h5UviCurrent);
+
+    spanEl = document.createElement("span");
+    spanEl.className = 'status-icon';
+    spanEl.style.backgroundColor = colorUvIndex(uvi);
+    spanEl.style.color = "white";
+    spanEl.textContent = uvi;
+    h5UviCurrent.appendChild(spanEl);
+}
+
+//return the date 
+var convertTime = function (time) {
+    const unixTime = time;
+    const date = new Date(unixTime * 1000);
+    return date.toLocaleDateString("en-US");
+}
+
+//Change the color of UVI element
+var colorUvIndex = function (uvi) {
+    if (uvi >= 0 && uvi < 3) {
+        return "green";
+    } else if (uvi >= 3 && uvi < 6) {
+        return "yellow";
+    } else if (uvi >= 6 && uvi < 8) {
+        return "orange";
+    } else if (uvi >= 8 && uvi < 11) {
+        return "red";
+    } else {
+        return "violet";
+    }
+}
+
+
+
+userFormEl.addEventListener('submit', formSubmitHandler);
+//cityButtonsEl.addEventListener('click', buttonClickHandler);
