@@ -64,7 +64,7 @@ var buttonClickHandler = function (event) {
 
 //Search latitude and longitude of a city
 var searchLatLon = function (city) {
-    var apiUrl = 'http://api.positionstack.com/v1/forward?access_key=' + YOUR_ACCESS_KEY + "&query=" + city + "&limit=1&output=json";
+    var apiUrl = 'https://api.positionstack.com/v1/forward?access_key=' + YOUR_ACCESS_KEY + "&query=" + city + "&limit=1&output=json";
     fetch(apiUrl)
         .then(function (response) {
             if (response.ok) {
