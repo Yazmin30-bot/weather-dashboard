@@ -8,9 +8,30 @@ const YOUR_ACCESS_KEY_FC = 'debe85d8fc3a44f41e99f4d94d0544ac'
 var history = [];
 
 //LocalStorage
+var history = JSON.parse(localStorage.getItem('history')) || [];
+var originalList = localStorage.getItem('history');
+if (originalList != null) {
+    var removeList = originalList.replace('[', '');
+    var removeList = removeList.replace(']', '');
+    var removeList = removeList.replaceAll('"', '');
+    var list = removeList.split(",");
+
+    if (list.length > 0) {
+        for (let i = 0; i < list.length; i++) {
+            var btnCity = document.createElement("button");
+            btnCity.className = 'btn';
+            btnCity.id = list[i];
+            console.log(list[i]);
+            btnCity.setAttribute("data-city", list[i]);
+            btnCity.innerHTML = list[i];
+            cityButtonsEl.appendChild(btnCity);
+
+        }
+    }
+}
 
 
-
+//When you click on the search button show the current and forecast weather
 var formSubmitHandler = function (event) {
     event.preventDefault();
 
@@ -27,6 +48,17 @@ var formSubmitHandler = function (event) {
     }
 
 
+};
+
+//When you click on the city button show the current and forecast weather
+var buttonClickHandler = function (event) {
+    var city = event.target.getAttribute('data-city');
+
+    if (city) {
+        searchLatLon(city);
+
+        weatherContainerEl.textContent = '';
+    }
 };
 
 
@@ -278,4 +310,4 @@ var colorUvIndex = function (uvi) {
 
 
 userFormEl.addEventListener('submit', formSubmitHandler);
-//cityButtonsEl.addEventListener('click', buttonClickHandler);
+cityButtonsEl.addEventListener('click', buttonClickHandler);
