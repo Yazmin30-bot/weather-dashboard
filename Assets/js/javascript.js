@@ -64,11 +64,12 @@ var buttonClickHandler = function (event) {
 
 //Search latitude and longitude of a city
 var searchLatLon = function (city) {
-    var apiUrl = 'https://api.positionstack.com/v1/forward?access_key=' + YOUR_ACCESS_KEY + "&query=" + city + "&limit=1&output=json";
+    //Change API
+    /* var apiUrl = 'https://api.positionstack.com/v1/forward?access_key=' + YOUR_ACCESS_KEY + "&query=" + city + "&limit=1&output=json"; */
+    var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q='+city+'&limit=1&appid='+YOUR_ACCESS_KEY_WEATHER;
     fetch(apiUrl)
         .then(function (response) {
             if (response.ok) {
-                console.log(response);
                 response.json().then(function (data) {
                     getLatLon(data, city);
                 });
@@ -83,13 +84,19 @@ var searchLatLon = function (city) {
 
 //Get the latitude and longitude
 var getLatLon = function (result, city) {
-    console.log(result);
-    if (result.data.length === 0) {
+    //Change this code 
+    /* console.log(result);
+    if (result.data.length === null) { */
+        if (result.length === 0) { 
         weatherContainerEl.textContent = 'No city found.';
         return;
     }
-    var lat = result.data[0].latitude;
-    var lon = result.data[0].longitude;
+    //Changed this code
+    /* var lat = result.data[0].latitude;
+    var lon = result.data[0].longitude; */
+    var lat = result[0].lat;
+    var lon = result[0].lon;
+
     searchCity(lat, lon, city);
 
 
