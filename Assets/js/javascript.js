@@ -66,11 +66,15 @@ var buttonClickHandler = function (event) {
 var searchLatLon = function (city) {
     //Change API
     /* var apiUrl = 'https://api.positionstack.com/v1/forward?access_key=' + YOUR_ACCESS_KEY + "&query=" + city + "&limit=1&output=json"; */
-    var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q='+city+'&limit=1&appid='+YOUR_ACCESS_KEY_WEATHER;
+    //https://api.openweathermap.org/data/2.5/weather?q='+userInput+'&appid='+appKey+'&units=imperial'
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&limit=1&appid=' + YOUR_ACCESS_KEY_WEATHER;
     fetch(apiUrl)
         .then(function (response) {
             if (response.ok) {
                 response.json().then(function (data) {
+                    console.log(data);
+                    /*                   console.log(data.coord.lat);
+                                       console.log(data.coord.lon); */
                     getLatLon(data, city);
                 });
             } else {
@@ -87,15 +91,15 @@ var getLatLon = function (result, city) {
     //Change this code 
     /* console.log(result);
     if (result.data.length === null) { */
-        if (result.length === 0) { 
+    if (result.length === 0) {
         weatherContainerEl.textContent = 'No city found.';
         return;
     }
     //Changed this code
     /* var lat = result.data[0].latitude;
     var lon = result.data[0].longitude; */
-    var lat = result[0].lat;
-    var lon = result[0].lon;
+    var lat = result.coord.lat;
+    var lon = result.coord.lon;
 
     searchCity(lat, lon, city);
 
@@ -130,12 +134,14 @@ var searchCity = function (latitude, longitude, city) {
 
 //Change the format of the inputCity
 var capitalize = function (city) {
-    city = city.toLowerCase();
-    const upperCasedCity = city.split(' ').map(city => {
-        return city[0].toUpperCase() + city.slice(1)
-    }).join(' ');
+    if (city != "") {
+        city = city.toLowerCase();
+        const upperCasedCity = city.split(' ').map(city => {
+            return city[0].toUpperCase() + city.slice(1)
+        }).join(' ');
 
-    return upperCasedCity;
+        return upperCasedCity;
+    }
 }
 
 //Save the city in localStorage
