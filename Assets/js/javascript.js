@@ -66,7 +66,7 @@ var buttonClickHandler = function (event) {
 var searchLatLon = function (city) {
     //Change API
     /* var apiUrl = 'https://api.positionstack.com/v1/forward?access_key=' + YOUR_ACCESS_KEY + "&query=" + city + "&limit=1&output=json"; */
-    var apiUrl = 'https://api.openweathermap.org/geo/1.0/direct?q='+city+'&limit=1&appid='+YOUR_ACCESS_KEY_WEATHER;
+    var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q='+city+'&limit=1&appid='+YOUR_ACCESS_KEY_WEATHER;
     fetch(apiUrl)
         .then(function (response) {
             if (response.ok) {
