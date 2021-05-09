@@ -119,6 +119,10 @@ p {
   font-size: 1rem;
 }
 
+.border-primary{
+  text-align: center;
+}
+
 #day-1,
 #day-2,
 #day-3,
