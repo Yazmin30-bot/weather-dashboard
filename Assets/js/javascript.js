@@ -2,7 +2,6 @@ var userFormEl = document.querySelector('#user-form');
 var cityButtonsEl = document.querySelector('#city-buttons');
 var nameInputEl = document.querySelector('#city');
 var weatherContainerEl = document.querySelector('#weather-container');
-/* const YOUR_ACCESS_KEY = '7b3fff5ed94752a044fd7eb472b110e5'; //https://positionstack.com/quickstart */
 const YOUR_ACCESS_KEY_WEATHER = 'debe85d8fc3a44f41e99f4d94d0544ac'; //https://home.openweathermap.org/api_keys
 const YOUR_ACCESS_KEY_FC = 'debe85d8fc3a44f41e99f4d94d0544ac'
 var history = [];
@@ -65,16 +64,12 @@ var buttonClickHandler = function (event) {
 //Search latitude and longitude of a city
 var searchLatLon = function (city) {
     //Change API
-    /* var apiUrl = 'https://api.positionstack.com/v1/forward?access_key=' + YOUR_ACCESS_KEY + "&query=" + city + "&limit=1&output=json"; */
-    //https://api.openweathermap.org/data/2.5/weather?q='+userInput+'&appid='+appKey+'&units=imperial'
     var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&limit=1&appid=' + YOUR_ACCESS_KEY_WEATHER;
     fetch(apiUrl)
         .then(function (response) {
             if (response.ok) {
                 response.json().then(function (data) {
                     console.log(data);
-                    /*                   console.log(data.coord.lat);
-                                       console.log(data.coord.lon); */
                     getLatLon(data, city);
                 });
             } else {
@@ -88,16 +83,10 @@ var searchLatLon = function (city) {
 
 //Get the latitude and longitude
 var getLatLon = function (result, city) {
-    //Change this code 
-    /* console.log(result);
-    if (result.data.length === null) { */
     if (result.length === 0) {
         weatherContainerEl.textContent = 'No city found.';
         return;
     }
-    //Changed this code
-    /* var lat = result.data[0].latitude;
-    var lon = result.data[0].longitude; */
     var lat = result.coord.lat;
     var lon = result.coord.lon;
 
